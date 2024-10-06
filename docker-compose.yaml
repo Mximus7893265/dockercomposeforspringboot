@@ -1,0 +1,31 @@
+version: "3"
+services:
+   maxpostgresql:
+      image: postgres
+      container_name: maxpostgresql
+      networks:
+        - maxnetwork
+      volumes: 
+        - maxvolumepostgresql:/var/lib/postgresql/data
+      environment:
+         POSTGRES_USER: max
+         POSTGRES_PASSWORD: max
+         POSTGRES_DB: users
+   maxspring:
+      build: ./javaapp
+      container_name: maxspring
+      networks:
+        - maxnetwork
+   maxnginx:
+      build: ./nginx
+      container_name: maxnginx
+      networks:
+        - maxnetwork
+      ports:
+        - 8080:8080
+networks:
+   maxnetwork:
+      driver: bridge
+volumes:
+   maxvolumepostgresql:
+      external: true
